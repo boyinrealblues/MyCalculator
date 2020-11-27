@@ -6,6 +6,44 @@ import android.widget.Button
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
+    var f:Int
+    var l:Int
+    init{
+        f=0
+        l=0
+    }
+    fun giveOperator(n:Int,ch:Char,d:Int):Int
+    {
+        if(ch=='+')
+         return (d+n)
+         else
+            return (d-n)
+    }
+    fun giveNum(str:String):ArrayList<Int>{
+        val num = "0123456789"
+        var sign=""
+        var sub:String=""
+        var load=ArrayList<Int>()
+        for(i in str.indices) {
+            if (num.indexOf(str[i]) != -1) {
+                sub += str[i]
+            } else {
+                load.add(sub.toInt())
+                sub = ""
+            }
+        }
+        return load
+    }
+    fun giveSign(str:String):String {
+        val sig = "+-"
+        var res: String = ""
+        for (i in str.indices) {
+            if (sig.indexOf(str[i]) != -1) {
+                res = res + str[i]
+            }
+        }
+        return res
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -68,8 +106,18 @@ class MainActivity : AppCompatActivity() {
             v.text=str}
         be.setOnClickListener{
             stn=v.text as String
-            f=stn.toInt()
-            v.text=f.toString()
+            var numbers=giveNum(stn)
+            var sign=giveSign(stn)
+            f = numbers[0]
+            l = numbers[1]
+            var cnt:Int=0
+            for(i in numbers.indices) {
+                f = giveOperator(f,sign[cnt++],l)
+                l=  numbers[i+2]
+            }
+               v.text=f.toString()
+                }
+            }
         }
-    }
-}
+
+
