@@ -2,8 +2,10 @@ package com.example.mycalculator
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.util.Log.e as logE
 
 class MainActivity : AppCompatActivity() {
     var f:Int
@@ -17,16 +19,16 @@ class MainActivity : AppCompatActivity() {
         if(ch=='+')
          return (d+n)
          else
-            return (d-n)
+            return (n-d)
     }
     fun giveNum(str:String):ArrayList<Int>{
+        val org=str+" "
         val num = "0123456789"
-        var sign=""
         var sub:String=""
         var load=ArrayList<Int>()
-        for(i in str.indices) {
-            if (num.indexOf(str[i]) != -1) {
-                sub += str[i]
+        for(i in 0..org.length-1) {
+            if (num.indexOf(org[i]) != -1) {
+                sub += org[i]
             } else {
                 load.add(sub.toInt())
                 sub = ""
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return res
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,19 +108,26 @@ class MainActivity : AppCompatActivity() {
         bs.setOnClickListener{str=str+"-"
             v.text=str}
         be.setOnClickListener{
-            stn=v.text as String
-            var numbers=giveNum(stn)
-            var sign=giveSign(stn)
-            f = numbers[0]
-            l = numbers[1]
-            var cnt:Int=0
-            for(i in numbers.indices) {
-                f = giveOperator(f,sign[cnt++],l)
-                l=  numbers[i+2]
+            var stn:String=v.text as String
+            var num=giveNum(stn)
+            var seq=giveSign(stn)
+            var c=0
+            var t=1
+            f=num[0]
+            l=num[t++]
+            for(i in 0..num.size-2){
+                f=giveOperator(l,seq[c++],f)
+                if(i==num.size-2)
+                    break
+                l=num[t++]
             }
-               v.text=f.toString()
-                }
-            }
-        }
+            v.text=f.toString()
+}
+        Log.e(giveOperator(4,'-',6).toString(),"Hello")
+        Log.e(giveNum("7+8+9+5+4+6").toString(),"hell")
+        Log.e(giveSign("4+8+7-8").toString(),"end")
+    }
+
+}
 
 
