@@ -2,10 +2,8 @@ package com.example.mycalculator
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import android.util.Log.e as logE
 
 class MainActivity : AppCompatActivity() {
     var f:Int
@@ -19,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         if(ch=='+')
          return (d+n)
          else
-            return (n-d)
+            return (d-n)
     }
     fun giveNum(str:String):ArrayList<Int>{
         val org=str+" "
@@ -66,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         val bp=findViewById<Button>(R.id.plus)
         val bs=findViewById<Button>(R.id.sub)
         val be=findViewById<Button>(R.id.equ)
-        val wrd=findViewById<TextView>(R.id.textView)
+        val wrd=findViewById<TextView>(R.id.txt)
         wrd.text=""
         var f:Int
         var stn:String
@@ -123,9 +121,6 @@ class MainActivity : AppCompatActivity() {
             }
             v.text=f.toString()
 }
-        Log.e(giveOperator(4,'-',6).toString(),"Hello")
-        Log.e(giveNum("7+8+9+5+4+6").toString(),"hell")
-        Log.e(giveSign("4+8+7-8").toString(),"end")
     }
 
 }
