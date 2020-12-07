@@ -9,10 +9,79 @@ import android.widget.TextView
 class MainActivity : AppCompatActivity() {
     var f: Int
     var l: Int
-
     init {
         f = 0
         l = 0
+    }
+    fun factorial(str: String):Int{
+        var num=str.substring(0,str.length-2).toInt()
+        var prod=1
+        for(i in num downTo 1){
+            prod*=i
+        }
+        return prod
+    }
+    fun giveFact(str: String):String{
+        var s= " "+str+"  "
+        var res=""
+        var cur=""
+        var st="+-x "
+        var cnt=0
+        do{
+            while(true){
+                cnt++
+                cur+=s[cnt]
+                if(st.indexOf(s[cnt])!=-1)
+                    break
+            }
+            if(cur.indexOf('!')!=-1)
+                res+=(factorial(cur).toString()+cur[cur.length-1])
+            else
+                res+=cur
+            cur=""
+        }while(cnt<s.length-2)
+        return delSpace(res)
+
+    }
+    fun theProduct(str: String):String{
+        var s= " "+str+"  "
+        var res=""
+        var cur=""
+        var st="+- "
+        var cnt=0
+        do{
+            while(true){
+                cnt++
+                cur+=s[cnt]
+                if(st.indexOf(s[cnt])!=-1&&(s[cnt+1]!='x'&&s[cnt-1]!='x'))
+                    break
+             }
+            if(cur.indexOf('x')!=-1)
+               res+=(multiply(cur.substring(0,cur.length-1)).toString()+cur[cur.length-1])
+           else
+               res+=cur
+            cur=""
+        }while(cnt<s.length-2)
+        return delSpace(res)
+    }
+    fun multiply(str:String):Int{
+        var s=str+" "
+        var t="0123456789-"
+        var wrd=""
+        var arrNum=ArrayList<Int>()
+        for(i in 0..s.length-1){
+            if(t.indexOf(s[i])!=-1) {
+                wrd += s[i]
+            }else
+            {
+                arrNum.add(wrd.toInt())
+                wrd=""
+            }
+        }
+        var prod=1
+        for(i in arrNum.indices)
+            prod*=arrNum[i]
+        return prod
     }
     fun truMath(str: String): String {//copy @truthMath(String) \/
         val t = "+-"
@@ -158,7 +227,7 @@ class MainActivity : AppCompatActivity() {
     val start: (String) -> Boolean = { s -> s.indexOf('+') > s.indexOf('x') || s.indexOf('-') > s.indexOf('x') }/*lambda to check if a 'x' operator comes before '+'*/
     val end: (String) -> Boolean = { s -> s.lastIndexOf('+') < s.lastIndexOf('x') || s.lastIndexOf('-') < s.lastIndexOf('x') }/*lambda to check if 'x' comes after the '+' in the end*/
 
-    fun giveProduct(str: String): String { //function that returns expression free of product operators//
+    fun giveProdctOutDated(str: String): String { //function that returns expression free of product operators//
         var newword: String = str  //to store the current and the expression free of product operator//
         var cur: Int
         var boolp = false
@@ -223,7 +292,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.e(giveProduct("1x2+4"), "check")
+        Log.e(giveFact("5!+4!+3!").toString(),"test04")
         var str: String = ""
         val v = findViewById<TextView>(R.id.txt) //creation of the display screen in the calculator
         v.text = "Your Calculation Here"
@@ -247,7 +316,7 @@ class MainActivity : AppCompatActivity() {
         val bca = findViewById<Button>(R.id.clral)
         val bb1 = findViewById<Button>(R.id.ob)
         val bb2 = findViewById<Button>(R.id.cb)
-        val vst=  findViewById<TextView>(R.id.msg)
+        val bfc = findViewById<Button>(R.id.fac)
         var f: Int
         var stn: String
             b1.setOnClickListener {
@@ -315,13 +384,24 @@ class MainActivity : AppCompatActivity() {
                 str = ""
                 v.text = str
             }
+            bfc.setOnClickListener {
+                str= str + "!"
+                v.text = str
+            }
             be.setOnClickListener { /*when pressed = , the execution of the maths*/
+                var temp="+-"
                 var stn: String = v.text as String //stn is the expression from a string objrct to string
                 stn = simulateMath(stn)//refining the expression by mathematical logic
-                if (stn.indexOf('x') != -1) {  //clearing out product first
-                    stn = giveProduct(stn)
+                if(stn.indexOf('!')!=-1){
+                    stn=giveFact(stn)
                 }
-                stn=delSpace(stn)
+                if (stn.indexOf('x') != -1) {  //clearing out product first
+                    stn = theProduct(stn)
+                }
+                if(stn.indexOf('+')==-1||stn.indexOf('-')==-1) {
+                    stn=stn+"+0"
+                }
+
                 var num = giveNum(stn) //list
                 var seq = giveSign(stn) // sequence
                 var c = 0 //counter for the operand order
