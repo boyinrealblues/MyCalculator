@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun multiply(str:String):Int{
         var s=str+" "
-        var t="0123456789-"
+        var t="0123456789-+"
         var wrd=""
         var arrNum=ArrayList<Int>()
         for(i in 0..s.length-1){
@@ -292,7 +292,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.e(giveFact("5!+4!+3!").toString(),"test04")
+        Log.e(theProduct(simulateMath("9x+-+-8")).toString(),"test04")
         var str: String = ""
         val v = findViewById<TextView>(R.id.txt) //creation of the display screen in the calculator
         v.text = "Your Calculation Here"
